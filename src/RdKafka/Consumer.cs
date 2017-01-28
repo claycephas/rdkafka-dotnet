@@ -36,12 +36,12 @@ namespace RdKafka
         /// <summary>
         /// Returns the current partition assignment as set by Assign.
         /// </summary>
-        public List<TopicPartition> Assignment => handle.GetAssignment();
+        public TopicPartition[] Assignment => handle.GetAssignment();
 
         /// <summary>
         /// Returns the current partition subscription as set by Subscribe.
         /// </summary>
-        public List<string> Subscription => handle.GetSubscription();
+        public string[] Subscription => handle.GetSubscription();
 
         /// <summary>
         /// Update the subscription set to topics.
@@ -54,7 +54,7 @@ namespace RdKafka
         /// partition.assignment.strategy to assign the subscription sets's
         /// topics's partitions to the consumers, depending on their subscription.
         /// </summary>
-        public void Subscribe(ICollection<string> topics)
+        public void Subscribe(string[] topics)
         {
             handle.Subscribe(topics);
         }
@@ -73,7 +73,7 @@ namespace RdKafka
         /// The assignment set is the set of partitions actually being consumed
         /// by the KafkaConsumer.
         /// </summary>
-        public void Assign(ICollection<TopicPartitionOffset> partitions)
+        public void Assign(IEnumerable<TopicPartitionOffset> partitions)
         {
             handle.Assign(partitions);
         }
@@ -124,7 +124,7 @@ namespace RdKafka
         /// <summary>
         /// Commit explicit list of offsets.
         /// </summary>
-        public Task Commit(ICollection<TopicPartitionOffset> offsets)
+        public Task Commit(IEnumerable<TopicPartitionOffset> offsets)
         {
             handle.Commit(offsets);
             return Task.FromResult(false);
