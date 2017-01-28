@@ -133,7 +133,7 @@ namespace RdKafka
         /// <summary>
         /// Retrieve committed offsets for topics+partitions.
         /// </summary>
-        public Task<List<TopicPartitionOffset>> Committed(ICollection<TopicPartition> partitions, TimeSpan timeout)
+        public Task<TopicPartitionOffset[]> Committed(IEnumerable<TopicPartition> partitions, TimeSpan timeout)
         {
             var result = handle.Committed(partitions, (IntPtr) timeout.TotalMilliseconds);
             return Task.FromResult(result);
@@ -146,7 +146,7 @@ namespace RdKafka
         /// of the last consumed message + 1, or RD_KAFKA_OFFSET_INVALID in case there was
         /// no previous message.
         /// </summary>
-        public List<TopicPartitionOffset> Position(ICollection<TopicPartition> partitions) => handle.Position(partitions);
+        public TopicPartitionOffset[] Position(IEnumerable<TopicPartition> partitions) => handle.Position(partitions);
 
         /// <summary>
         /// Get last known low (oldest/beginning) and high (newest/end) offsets for partition.
@@ -161,8 +161,8 @@ namespace RdKafka
             => handle.GetWatermarkOffsets(topicPartition.Topic, topicPartition.Partition);
 
         // Rebalance callbacks
-        public event EventHandler<List<TopicPartitionOffset>> OnPartitionsAssigned;
-        public event EventHandler<List<TopicPartitionOffset>> OnPartitionsRevoked;
+        public event EventHandler<TopicPartitionOffset>[] OnPartitionsAssigned;
+        public event EventHandler<TopicPartitionOffset[]> OnPartitionsRevoked;
 
         // Explicitly keep reference to delegate so it stays alive
         LibRdKafka.RebalanceCallback RebalanceDelegate;
