@@ -161,7 +161,7 @@ namespace RdKafka
             => handle.GetWatermarkOffsets(topicPartition.Topic, topicPartition.Partition);
 
         // Rebalance callbacks
-        public event EventHandler<TopicPartitionOffset>[] OnPartitionsAssigned;
+        public event EventHandler<TopicPartitionOffset[]> OnPartitionsAssigned;
         public event EventHandler<TopicPartitionOffset[]> OnPartitionsRevoked;
 
         // Explicitly keep reference to delegate so it stays alive
@@ -200,7 +200,7 @@ namespace RdKafka
         public struct OffsetCommitArgs
         {
             public ErrorCode Error { get; set; }
-            public IList<TopicPartitionOffset> Offsets { get; set; }
+            public TopicPartitionOffset[] Offsets { get; set; }
         }
         public event EventHandler<OffsetCommitArgs> OnOffsetCommit;
 
